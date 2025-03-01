@@ -126,20 +126,13 @@ export const updateProfile = async (req, res) => {
     const { fullname, email, phoneNumber, bio, skills } = req.body;
     const file = req.file;
 
-    if (!fullname || !email || !phoneNumber || !bio || !skills) {
-      return res.status(400).json({
-        message: "Feilds cannot be left empty!!",
-        success: false,
-      });
-    }
-
     //cloudinary.......
 
-    const skillsArray = skills.split(",");
+    let skillsArray;
     const userID = req.id; //req.id from middleware isAuthenticated
 
     //extracheck
-    let user = await User.findById({ userID });
+    let user = await User.findById( userID );
 
     if (!user) {
       return res.status(400).json({
@@ -149,13 +142,16 @@ export const updateProfile = async (req, res) => {
     }
 
     //updating data
-    (User.fullname = fullname),
-      (User.email = email),
-      (User.phoneNumber = phoneNumber),
-      (User.profile.bio = bio),
-      (User.profile.skills = skillsArray);
+    if(fullname) user.fullname = fullname
+    if(email) user.email = email
+    if(phoneNumber) user.phoneNumber = phoneNumber
+    if(bio) user.profile.bio = bio
+    if(skills) {
+        skillsArray = skills.split(",");
+        user.profile.skills = skillsArray
+    }
 
-    await User.save();
+    await user.save();
 
     user = {
       _id: user._id,
