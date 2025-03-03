@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import userRoute from "./routes/userRoute.js";
 import compnayRoute from "./routes/companyRoute.js"
+import jobRoute from "./routes/jobRoute.js"
 
 dotenv.config();
 const port = process.env.PORT || 3000;
@@ -26,6 +27,7 @@ app.use(cors(corsOption));
 //routes
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/company", compnayRoute);
+app.use("/api/v1/job", jobRoute);
 
 app.listen(port, () => {
   connectDB();
