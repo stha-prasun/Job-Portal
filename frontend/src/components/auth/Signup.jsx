@@ -95,8 +95,7 @@ const Signup = () => {
                   <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
                 </g>
               </svg>
-              <input accept="image/*" type="file" className="hidden" />
-              <span className="text-gray-500">Choose file</span>
+              <input accept="image/*" type="file" />
             </label>
           </div>
           <button className="btn btn-outline btn-warning mt-5 w-full mb-5">Sign Up</button>
