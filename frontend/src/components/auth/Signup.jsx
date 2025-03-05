@@ -1,13 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../shared/Navbar";
 import { Link } from "react-router-dom";
 
 const Signup = () => {
+  const [input, setinput] = useState({
+    fullname: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
+    role: "",
+    file: "",
+  });
+
+  const handleChange = (e) => {
+    setinput({ ...input, [e.target.name]: e.target.value });
+  };
+
+  const handleFile = (e) => {
+    setinput({ ...input, file: e.target.files?.[0] });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(input);
+  };
   return (
     <div>
       <Navbar />
       <div className="flex items-center justify-center max-w-7xl mx-auto">
-        <form className="w-1/2 border border-gray-200 rounded-md p-4 my-10">
+        <form
+          onSubmit={handleSubmit}
+          className="w-1/2 border border-gray-200 rounded-md p-4 my-10"
+        >
           <h1 className="font-bold text-xl mb-5 text-center text-[#00796B]">
             Signup <span className="text-[#FFCA28]">Now</span>
           </h1>
@@ -16,6 +40,9 @@ const Signup = () => {
               <span className="label-text">Full Name</span>
             </label>
             <input
+            name="fullname"
+              value={input.fullname}
+              onChange={handleChange}
               type="text"
               placeholder="Name"
               className="input input-bordered w-full focus:outline-none focus:ring-0"
@@ -27,6 +54,9 @@ const Signup = () => {
               <span className="label-text">Email</span>
             </label>
             <input
+            name="email"
+              value={input.email}
+              onChange={handleChange}
               type="text"
               placeholder="something@domain.com"
               className="input input-bordered w-full focus:outline-none focus:ring-0"
@@ -38,6 +68,9 @@ const Signup = () => {
               <span className="label-text">Phone Number</span>
             </label>
             <input
+            name="phoneNumber"
+              value={input.phoneNumber}
+              onChange={handleChange}
               type="number"
               placeholder="9811111111"
               className="input input-bordered w-full focus:outline-none focus:ring-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
@@ -49,6 +82,9 @@ const Signup = () => {
               <span className="label-text">Password</span>
             </label>
             <input
+            name="password"
+              value={input.password}
+              onChange={handleChange}
               type="password"
               placeholder="Password"
               className="input input-bordered w-full focus:outline-none focus:ring-0"
@@ -59,18 +95,22 @@ const Signup = () => {
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="radio"
-                name="radio-8"
+                name="role"
                 className="radio radio-warning"
                 value="candidate"
+                checked={input.role === "candidate"}
+                onChange={handleChange}
               />
               <span>Candidate</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="radio"
-                name="radio-8"
+                name="role"
                 className="radio radio-warning"
                 value="recruiter"
+                checked={input.role === "recruiter"}
+                onChange={handleChange}
               />
               <span>Recruiter</span>
             </label>
@@ -95,11 +135,21 @@ const Signup = () => {
                   <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
                 </g>
               </svg>
-              <input accept="image/*" type="file" />
+              <input name="file" accept="image/*" type="file" onChange={handleFile} />
             </label>
           </div>
-          <button className="btn btn-outline btn-warning mt-5 w-full mb-5">Sign Up</button>
-          <span className="text-sm">Already have an account? <Link to="/login" className="text-blue-600">Login</Link></span>
+          <button
+            type="submit"
+            className="btn btn-outline btn-warning mt-5 w-full mb-5"
+          >
+            Sign Up
+          </button>
+          <span className="text-sm">
+            Already have an account?{" "}
+            <Link to="/login" className="text-blue-600">
+              Login
+            </Link>
+          </span>
         </form>
       </div>
     </div>
