@@ -4,8 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { USER_API_ENDPOINT } from "../../utils/constants";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "../../redux/authSlice";
 
 const Signup = () => {
+  const {loading} = useSelector((store)=>store.auth);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [input, setinput] = useState({
     fullname: "",
@@ -36,6 +40,7 @@ const Signup = () => {
       formData.append("file", input.file);
     }
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(`${USER_API_ENDPOINT}/register`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -49,6 +54,8 @@ const Signup = () => {
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
+    } finally{
+      dispatch(setLoading(false));
     }
   };
 
@@ -171,12 +178,23 @@ const Signup = () => {
               />
             </label>
           </div>
-          <button
-            type="submit"
-            className="btn btn-outline btn-warning mt-5 w-full mb-5"
-          >
-            Sign Up
-          </button>
+          {
+            loading? (
+              <button
+              className="btn btn-outline btn-warning mt-5 w-full mb-5"
+              disabled="disabled"
+            >
+              <span className="loading loading-spinner"></span>
+            </button>
+            ) : (
+              <button
+              type="submit"
+              className="btn btn-outline btn-warning mt-5 w-full mb-5"
+            >
+              Sign Up
+            </button>
+            )
+          }
           <span className="text-sm">
             Already have an account?{" "}
             <Link to="/login" className="text-blue-600">

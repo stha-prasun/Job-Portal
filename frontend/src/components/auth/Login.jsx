@@ -4,8 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { USER_API_ENDPOINT } from "../../utils/constants";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "../../redux/authSlice";
 
 const Login = () => {
+  const { loading } = useSelector((store) => store.auth);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [input, setinput] = useState({
     email: "",
@@ -20,6 +24,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      dispatch(setLoading(true));
       const res = await axios.post(
         `${USER_API_ENDPOINT}/login`,
         {
@@ -50,6 +55,8 @@ const Login = () => {
       } else {
         toast.error("An unexpected error occurred.");
       }
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -117,13 +124,21 @@ const Login = () => {
               <span>Recruiter</span>
             </label>
           </div>
-
-          <button
-            type="submit"
-            className="btn btn-outline btn-warning mt-5 w-full mb-5"
-          >
-            Log In
-          </button>
+          {loading ? (
+            <button
+              className="btn btn-outline btn-warning mt-5 w-full mb-5"
+              disabled="disabled"
+            >
+              <span className="loading loading-spinner"></span>
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="btn btn-outline btn-warning mt-5 w-full mb-5"
+            >
+              Log In
+            </button>
+          )}
           <span className="text-sm">
             Don't have an account?{" "}
             <Link to="/signup" className="text-blue-600">
