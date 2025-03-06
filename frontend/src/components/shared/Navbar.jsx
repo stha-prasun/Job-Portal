@@ -11,14 +11,14 @@ const Navbar = () => {
       <div className="bg-white">
         <div className="flex items-center justify-between mx-auto max-w-7xl h-16">
           <div>
-            <h1 className="text-2xl font-bold text-[#1A1A1A]">
+            <Link to="/"><h1 className="text-2xl font-bold text-[#1A1A1A] hover:cursor-pointer">
               Work<span className="text-[#FFC107]">Hive</span>
-            </h1>
+            </h1></Link>
           </div>
-          <div className="flex items-center gap-10">
+          <div className="flex items-center gap-10 hover:cursor-pointer">
             <ul className="flex font-medium items-center gap-5">
-              <li>Home</li>
-              <li>Jobs</li>
+              <Link to="/"><li>Home</li></Link>
+              <Link to="/jobs"><li>Jobs</li></Link>
               <li>Browse</li>
             </ul>
 
