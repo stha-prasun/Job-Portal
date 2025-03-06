@@ -11,16 +11,22 @@ const Job = () => {
             <FaGoogle />
           </button>
           <div className="ml-2">
-            <div className="w-52 flex justify-between">
-              <h2 class="card-title">Company Name</h2>
+            <div className="w-52 flex justify-between items-center">
+              <div>
+                <h2 class="card-title">Company Name</h2>
+                <p>Nepal</p>
+              </div>
               <CiBookmarkPlus className="h-7 w-7" />
             </div>
-            <p>Nepal</p>
           </div>
         </div>
         <div>
-            <h1 className="font-bold text-lg">Title</h1>
-            <p className="text-sm text-gray-600">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum obcaecati dolorum pariatur odio atque. Pariatur nesciunt quos minus quis cumque?</p>
+          <h1 className="font-bold text-lg">Title</h1>
+          <p className="text-sm text-gray-600">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum
+            obcaecati dolorum pariatur odio atque. Pariatur nesciunt quos minus
+            quis cumque?
+          </p>
         </div>
         <div class="justify-end card-actions">
           <button class="btn btn-primary">Apply Now</button>
