@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import Navbar from "../shared/Navbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { USER_API_ENDPOINT } from "../../utils/constants";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [input, setinput] = useState({
     fullname: "",
     email: "",
@@ -22,8 +26,32 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(input);
+    const formData = new FormData();
+    formData.append("fullname", input.fullname);
+    formData.append("email", input.email);
+    formData.append("phoneNumber", input.phoneNumber);
+    formData.append("password", input.password);
+    formData.append("role", input.role);
+    if (input.file) {
+      formData.append("file", input.file);
+    }
+    try {
+      const res = await axios.post(`${USER_API_ENDPOINT}/register`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        toast.success(res.data.message);
+        navigate("/login");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
   };
+
   return (
     <div>
       <Navbar />
@@ -40,7 +68,7 @@ const Signup = () => {
               <span className="label-text">Full Name</span>
             </label>
             <input
-            name="fullname"
+              name="fullname"
               value={input.fullname}
               onChange={handleChange}
               type="text"
@@ -54,7 +82,7 @@ const Signup = () => {
               <span className="label-text">Email</span>
             </label>
             <input
-            name="email"
+              name="email"
               value={input.email}
               onChange={handleChange}
               type="text"
@@ -68,7 +96,7 @@ const Signup = () => {
               <span className="label-text">Phone Number</span>
             </label>
             <input
-            name="phoneNumber"
+              name="phoneNumber"
               value={input.phoneNumber}
               onChange={handleChange}
               type="number"
@@ -82,7 +110,7 @@ const Signup = () => {
               <span className="label-text">Password</span>
             </label>
             <input
-            name="password"
+              name="password"
               value={input.password}
               onChange={handleChange}
               type="password"
@@ -135,7 +163,12 @@ const Signup = () => {
                   <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
                 </g>
               </svg>
-              <input name="file" accept="image/*" type="file" onChange={handleFile} />
+              <input
+                name="file"
+                accept="image/*"
+                type="file"
+                onChange={handleFile}
+              />
             </label>
           </div>
           <button
