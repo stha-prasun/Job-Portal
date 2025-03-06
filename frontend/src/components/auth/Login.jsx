@@ -31,13 +31,14 @@ const Login = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true,
         }
       );
 
-      if(res.data.success){
+      if (res.data.success) {
         toast.success(res.data.message);
         navigate("/");
-      }else{
+      } else {
         toast.error(res.data.message);
       }
     } catch (error) {
