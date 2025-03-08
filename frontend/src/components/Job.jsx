@@ -1,8 +1,12 @@
 import React from "react";
 import { CiBookmarkPlus } from "react-icons/ci";
 import { FaGoogle } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Job = () => {
+  const navigate = useNavigate();
+  const jobID = "kwj";
+
   return (
     <div class="card w-72 bg-base-100 card-md shadow-sm">
       <div class="card-body">
@@ -29,7 +33,7 @@ const Job = () => {
           </p>
         </div>
         <div class="justify-end card-actions">
-          <button class="btn btn-primary">Apply Now</button>
+          <button class="btn btn-primary" onClick={()=>navigate(`/description/${jobID}`)}>Apply Now</button>
         </div>
       </div>
     </div>

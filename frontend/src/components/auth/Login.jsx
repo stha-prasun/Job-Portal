@@ -5,7 +5,7 @@ import { USER_API_ENDPOINT } from "../../utils/constants";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "../../redux/authSlice";
+import { setLoading, setLoggedInUser } from "../../redux/authSlice";
 
 const Login = () => {
   const { loading } = useSelector((store) => store.auth);
@@ -42,6 +42,7 @@ const Login = () => {
 
       if (res.data.success) {
         toast.success(res.data.message);
+        dispatch(setLoggedInUser(res.data.loggedInUser));
         navigate("/");
       } else {
         toast.error(res.data.message);
