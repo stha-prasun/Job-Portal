@@ -5,11 +5,13 @@ import { MdOutlineEmail } from "react-icons/md";
 import { RiContactsLine } from "react-icons/ri";
 import AppliedJobsTable from "./AppliedJobsTable";
 import UpdateProfile from "./updateProfile";
+import { useSelector } from "react-redux";
 
-const skills = ["Html", "CSS", "JavaScript", "ReactJs"];
+// const skills = ["Html", "CSS", "JavaScript", "ReactJs"];
 
 const Profile = () => {
   const haveResume = true;
+  const {loggedInUser} = useSelector((store)=>store.auth);
 
   return (
     <div>
@@ -28,10 +30,9 @@ const Profile = () => {
             </div>
 
             <div>
-              <h1 className="font-medium text-xl">Username</h1>
+              <h1 className="font-medium text-xl">{loggedInUser?.fullname}</h1>
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta
-                quidem architecto a?
+                {loggedInUser?.profile?.bio?.trim() ? loggedInUser.profile.bio : "NA"}
               </p>
             </div>
           </div>
@@ -49,18 +50,18 @@ const Profile = () => {
         <div className="my-5">
           <div className="flex items-center gap-3 my-2">
             <MdOutlineEmail size={20} />
-            <span>something@gmail.com</span>
+            <span>{loggedInUser?.email}</span>
           </div>
           <div className="flex items-center gap-3 my-2">
             <RiContactsLine size={20} />
-            <span>+97795654523</span>
+            <span>{loggedInUser?.phoneNumber}</span>
           </div>
         </div>
         <div className="my-5">
           <h1 className="font-medium text-xl my-2">Skills</h1>
           <div className="flex items-center gap-1">
-            {skills.length !== 0 ? (
-              skills.map((item, index) => (
+            {loggedInUser?.profile?.skills.length !== 0 ? (
+              loggedInUser?.profile.skills.map((item, index) => (
                 <div key={index} className="badge badge-outline badge-neutral">
                   {item}
                 </div>
