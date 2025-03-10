@@ -25,7 +25,7 @@ const UpdateProfile = () => {
 
   const handleFile = (e) =>{
     const file = e.target.files?.[0];
-    setinput({...input}, file);
+    setinput({...input, file});
   }
 
   const handleSubmit = async (e) =>{
@@ -115,7 +115,7 @@ const UpdateProfile = () => {
               placeholder="Enter your phone number"
               className="input input-bordered w-full"
               id="number"
-              name="number"
+              name="phoneNumber"
             />
           </div>
 
