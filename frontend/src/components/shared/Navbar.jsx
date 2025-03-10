@@ -1,11 +1,48 @@
 import React from "react";
 import { RxAvatar } from "react-icons/rx";
 import { IoIosLogOut } from "react-icons/io";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { USER_API_ENDPOINT } from "../../utils/constants";
+import { setLoggedInUser } from "../../redux/authSlice";
 
 const Navbar = () => {
   const { loggedInUser } = useSelector((store) => store.auth);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogOut = async () =>{
+    try {
+      const res = await axios.get(
+        `${USER_API_ENDPOINT}/logout`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+
+      if (res.data.success) {
+        toast.success(res.data.message);
+        dispatch(setLoggedInUser(null));
+        navigate("/login");
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      if (error.response) {
+        toast.error(error.response.data.message || "Something went wrong!");
+      } else if (error.request) {
+        toast.error("No response from server. Please try again later.");
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
+    }
+  }
   return (
     <>
       <div className="bg-white">
@@ -69,7 +106,7 @@ const Navbar = () => {
                     </div>
                     <div className="flex items-center gap-5">
                       <IoIosLogOut size={30} />
-                      <a className="link link-hover">Logout</a>
+                      <a onClick={handleLogOut} className="link link-hover">Logout</a>
                     </div>
                   </div>
                 </ul>
