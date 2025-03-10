@@ -14,6 +14,12 @@ export const register = async (req, res) => {
         success: false,
       });
     }
+
+    //cloudinary
+    const file = req.file;
+    const fileUri = getDataUri(file);
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+
     const user = await User.findOne({ email });
 
     if (user) {
@@ -31,6 +37,9 @@ export const register = async (req, res) => {
       phoneNumber,
       password: hashedPassword,
       role,
+      profile: {
+        profilePicture: cloudResponse.secure_url,
+      },
     });
 
     return res.status(201).json({
@@ -136,7 +145,7 @@ export const updateProfile = async (req, res) => {
     const userID = req.id; //req.id from middleware isAuthenticated
 
     //extracheck
-    let user = await User.findById( userID );
+    let user = await User.findById(userID);
 
     if (!user) {
       return res.status(400).json({
@@ -146,17 +155,17 @@ export const updateProfile = async (req, res) => {
     }
 
     //updating data
-    if(fullname) user.fullname = fullname
-    if(email) user.email = email
-    if(phoneNumber) user.phoneNumber = phoneNumber
-    if(bio) user.profile.bio = bio
-    if(skills) {
-        skillsArray = skills.split(",");
-        user.profile.skills = skillsArray
+    if (fullname) user.fullname = fullname;
+    if (email) user.email = email;
+    if (phoneNumber) user.phoneNumber = phoneNumber;
+    if (bio) user.profile.bio = bio;
+    if (skills) {
+      skillsArray = skills.split(",");
+      user.profile.skills = skillsArray;
     }
-    if(cloudResponse){
-      user.profile.resume = cloudResponse.secure_url //save the cloudinary url
-      user.profile.resumeOriginalName = file.originalname //save the original file name
+    if (cloudResponse) {
+      user.profile.resume = cloudResponse.secure_url; //save the cloudinary url
+      user.profile.resumeOriginalName = file.originalname; //save the original file name
     }
 
     await user.save();
