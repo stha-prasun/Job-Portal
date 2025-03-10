@@ -86,7 +86,7 @@ const Navbar = () => {
                   className="avatar hover:cursor-pointer"
                 >
                   <div className="h-[40px] w-[40px] rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                    <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                    <img src={loggedInUser?.profile?.profilePicture} />
                   </div>
                 </div>
                 <ul
@@ -95,7 +95,7 @@ const Navbar = () => {
                 >
                   <li className="w-full font-medium">Prasun Shrestha</li>
                   <li className="text-sm text-gray-500">
-                    Lorem ipsum dolor sit amet.
+                    {loggedInUser?.profile?.bio}
                   </li>
                   <div className="text-gray-600 flex flex-col gap-3">
                     <div className="flex items-center gap-5">

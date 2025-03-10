@@ -25,7 +25,8 @@ const Signup = () => {
   };
 
   const handleFile = (e) => {
-    setinput({ ...input, file: e.target.files?.[0] });
+    const file = e.target.files?.[0];
+    setinput({...input, file});
   };
 
   const handleSubmit = async (e) => {
