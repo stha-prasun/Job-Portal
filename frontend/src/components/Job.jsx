@@ -3,9 +3,8 @@ import { CiBookmarkPlus } from "react-icons/ci";
 import { FaGoogle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const Job = () => {
+const Job = ({job}) => {
   const navigate = useNavigate();
-  const jobID = "kwj";
 
   return (
     <div class="card w-72 bg-base-100 card-md shadow-sm">
@@ -17,7 +16,7 @@ const Job = () => {
           <div className="ml-2">
             <div className="w-52 flex justify-between items-center">
               <div>
-                <h2 class="card-title">Company Name</h2>
+                <h2 class="card-title">{job?.company?.name}</h2>
                 <p>Nepal</p>
               </div>
               <CiBookmarkPlus className="h-7 w-7" />
@@ -25,15 +24,13 @@ const Job = () => {
           </div>
         </div>
         <div>
-          <h1 className="font-bold text-lg">Title</h1>
+          <h1 className="font-bold text-lg">{job?.title}</h1>
           <p className="text-sm text-gray-600">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum
-            obcaecati dolorum pariatur odio atque. Pariatur nesciunt quos minus
-            quis cumque?
+            {job?.description}
           </p>
         </div>
         <div class="justify-end card-actions">
-          <button class="btn btn-primary" onClick={()=>navigate(`/description/${jobID}`)}>Apply Now</button>
+          <button class="btn btn-primary" onClick={()=>navigate(`/description/${job?._id}`)}>Apply Now</button>
         </div>
       </div>
     </div>

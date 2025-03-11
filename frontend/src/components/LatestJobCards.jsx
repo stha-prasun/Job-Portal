@@ -1,6 +1,6 @@
 import React from "react";
 
-const LatestJobCards = () => {
+const LatestJobCards = ({job}) => {
   return (
     <div>
       <div className="card w-96 shadow-xl border border-gray-100 cursor-pointer">
@@ -9,15 +9,15 @@ const LatestJobCards = () => {
         </figure>
         <div className="card-body">
           <h2 className="card-title font-bold">
-            Job Title
+            {job?.title}
             <div className="badge badge-secondary">NEW</div>
           </h2>
-          <h2 className="text-base">Company Name</h2>
+          <h2 className="text-base">{job?.company?.name}</h2>
           <p>Nepal</p>
           <div className="card-actions justify-end">
-            <div className="badge badge-outline">12 Openings</div>
-            <div className="badge badge-outline">Part Time</div>
-            <div className="badge badge-outline">24LPA</div>
+            <div className="badge badge-outline">{job?.openings} Openings</div>
+            <div className="badge badge-outline">{job?.jobType}</div>
+            <div className="badge badge-outline">{job?.salary} LPA</div>
           </div>
         </div>
       </div>
