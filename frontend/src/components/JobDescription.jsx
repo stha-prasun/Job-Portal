@@ -1,18 +1,25 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setSingleJob } from "../redux/jobSlice";
-import { JOB_API_ENDPOINT } from "../utils/constants";
+import { APPLICATION_API_ENDPOINT, JOB_API_ENDPOINT } from "../utils/constants";
 import Navbar from "./shared/Navbar";
+import toast from "react-hot-toast";
 
 const JobDescription = () => {
-  const isApplied = false;
   const params = useParams();
   const jobID = params.id;
+
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { loggedInUser } = useSelector((store) => store.auth);
+  if (!loggedInUser) {
+    navigate("/login");
+    toast.error("Login Please");
+  }
+
   const { singleJob } = useSelector((store) => store.job);
 
   useEffect(() => {
@@ -30,6 +37,24 @@ const JobDescription = () => {
     };
     fetchSingleJob();
   }, [jobID, dispatch, loggedInUser?._id]);
+  
+
+  const handleApply = async () => {
+    try {
+      const res = await axios.get(
+        `${APPLICATION_API_ENDPOINT}/apply/${jobID}`,
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.data.success) {
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
+  };
 
   return (
     <>
@@ -93,13 +118,9 @@ const JobDescription = () => {
 
           {/* Apply Button */}
           <div className="text-center">
-            {!isApplied ? (
-              <button className="btn btn-primary w-full">Apply Now</button>
-            ) : (
-              <button className="btn" disabled="disabled">
-                Already Applied
-              </button>
-            )}
+            <button onClick={handleApply} className="btn btn-primary w-full">
+              Apply Now
+            </button>
           </div>
         </div>
       </div>
