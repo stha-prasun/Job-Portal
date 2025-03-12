@@ -1,8 +1,11 @@
 import React from "react";
 import Navbar from "../shared/Navbar";
 import CompaniesTable from "./CompaniesTable";
+import { useNavigate } from "react-router-dom";
 
 const Companies = () => {
+  const navigate = useNavigate();
+
   return (
     <div>
       <Navbar />
@@ -14,7 +17,12 @@ const Companies = () => {
             className="input input-bordered w-64"
           />
 
-          <button className="btn btn-neutral">New Company</button>
+          <button
+            onClick={() => navigate("/admin/companies/create")}
+            className="btn btn-neutral"
+          >
+            New Company
+          </button>
         </div>
         <CompaniesTable />
       </div>
