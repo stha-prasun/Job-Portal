@@ -5,6 +5,7 @@ import { COMPANY_API_ENDPOINT } from "../utils/constants";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { setSingleCompany } from "../redux/companySlice";
+import axios from "axios";
 
 const CompanyCreate = () => {
   const navigate = useNavigate();
