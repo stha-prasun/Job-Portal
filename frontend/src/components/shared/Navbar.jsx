@@ -13,17 +13,14 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleLogOut = async () =>{
+  const handleLogOut = async () => {
     try {
-      const res = await axios.get(
-        `${USER_API_ENDPOINT}/logout`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
+      const res = await axios.get(`${USER_API_ENDPOINT}/logout`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
 
       if (res.data.success) {
         toast.success(res.data.message);
@@ -42,7 +39,7 @@ const Navbar = () => {
         toast.error("An unexpected error occurred.");
       }
     }
-  }
+  };
   return (
     <>
       <div className="bg-white">
@@ -56,15 +53,28 @@ const Navbar = () => {
           </div>
           <div className="flex items-center gap-10 hover:cursor-pointer">
             <ul className="flex font-medium items-center gap-5">
-              <Link to="/">
-                <li>Home</li>
-              </Link>
-              <Link to="/jobs">
-                <li>Jobs</li>
-              </Link>
-              <Link to="/browse">
-                <li>Browse</li>
-              </Link>
+              {loggedInUser?.role === "recruiter" ? (
+                <>
+                  <Link to="/admin/companies">
+                    Companies<li></li>
+                  </Link>
+                  <Link to="/admin/jobs">
+                    <li>Jobs</li>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/">
+                    <li>Home</li>
+                  </Link>
+                  <Link to="/jobs">
+                    <li>Jobs</li>
+                  </Link>
+                  <Link to="/browse">
+                    <li>Browse</li>
+                  </Link>
+                </>
+              )}
             </ul>
 
             {!loggedInUser ? (
@@ -95,18 +105,24 @@ const Navbar = () => {
                 >
                   <li className="w-full font-medium">Prasun Shrestha</li>
                   <li className="text-sm text-gray-500">
-                    {loggedInUser?.profile?.bio}
+                    {loggedInUser?.role === "candidate"
+                      ? loggedInUser?.profile?.bio
+                      : "Recruiter Account"}
                   </li>
                   <div className="text-gray-600 flex flex-col gap-3">
-                    <div className="flex items-center gap-5">
-                      <RxAvatar size={30} />
-                      <Link to="/profile">
-                        <a className="link link-hover">View Profile</a>
-                      </Link>
-                    </div>
+                    {loggedInUser?.role === "candidate" && (
+                      <div className="flex items-center gap-5">
+                        <RxAvatar size={30} />
+                        <Link to="/profile">
+                          <a className="link link-hover">View Profile</a>
+                        </Link>
+                      </div>
+                    )}
                     <div className="flex items-center gap-5">
                       <IoIosLogOut size={30} />
-                      <a onClick={handleLogOut} className="link link-hover">Logout</a>
+                      <a onClick={handleLogOut} className="link link-hover">
+                        Logout
+                      </a>
                     </div>
                   </div>
                 </ul>
