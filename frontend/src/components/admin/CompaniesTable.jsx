@@ -1,6 +1,8 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 const CompaniesTable = () => {
+  const { companies } = useSelector((store) => store.company);
   return (
     <div className="mt-5">
       <h1 className="text-lg font-bold mb-4">
@@ -12,7 +14,7 @@ const CompaniesTable = () => {
           {/* Table Head */}
           <thead>
             <tr>
-              <th>#</th>
+              <th>Company ID</th>
               <th>Logo</th>
               <th>Name</th>
               <th>Date</th>
@@ -20,32 +22,37 @@ const CompaniesTable = () => {
             </tr>
           </thead>
           <tbody>
-            {/* Row 1 */}
-            <tr>
-              <td>1</td>
-              <td>
-                <div className="avatar">
-                  <div className="w-16 rounded-full">
-                    <img
-                      src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                      alt="Company Logo"
-                    />
-                  </div>
-                </div>
-              </td>
-              <td>Company Name</td>
-              <td>2005-12-14</td>
-              <td>
-                <button
-                  className="btn btn-sm btn-neutral"
-                  onClick={() =>
-                    document.getElementById("my_modal_3").showModal()
-                  }
-                >
-                  Edit
-                </button>
-              </td>
-            </tr>
+            {companies?.length <= 0 ? (
+              <span>No Companies</span>
+            ) : (
+              companies?.map((company) => (
+                <tr key={company?._id}>
+                  <td>{company?._id}</td>
+                  <td>
+                    <div className="avatar">
+                      <div className="w-16 rounded-full">
+                        <img
+                          src={company?.logo}
+                          alt="Company Logo"
+                        />
+                      </div>
+                    </div>
+                  </td>
+                  <td>{company?.name}</td>
+                  <td>{company?.createdAt.split("T")[0]}</td>
+                  <td>
+                    <button
+                      className="btn btn-sm btn-neutral"
+                      onClick={() =>
+                        document.getElementById("my_modal_3").showModal()
+                      }
+                    >
+                      Edit
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
