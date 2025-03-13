@@ -117,7 +117,7 @@ export const getAdminJobs = async (req, res) => {
         success: false,
       });
     }
-    return res.status(400).json({
+    return res.status(200).json({
       jobs,
       success: true,
     });
