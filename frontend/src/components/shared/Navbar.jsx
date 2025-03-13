@@ -103,7 +103,7 @@ const Navbar = () => {
                   tabIndex={0}
                   className="dropdown-content menu bg-white shadow-lg rounded-md w-52 p-3 z-50 flex flex-col items-center text-center gap-y-3 hover:cursor-default"
                 >
-                  <li className="w-full font-medium">Prasun Shrestha</li>
+                  <li className="w-full font-medium">{loggedInUser?.fullname}</li>
                   <li className="text-sm text-gray-500">
                     {loggedInUser?.role === "candidate"
                       ? loggedInUser?.profile?.bio
