@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../shared/Navbar";
 import CompaniesTable from "./CompaniesTable";
 import { useNavigate } from "react-router-dom";
 import useGetAllCompanies from "../../hooks/useGetAllCompanies";
+import { useDispatch } from "react-redux";
+import { setsearchCompanyByText } from "../../redux/companySlice";
 
 const Companies = () => {
   const navigate = useNavigate();
   useGetAllCompanies();
+
+  const [input, setinput] = useState();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setsearchCompanyByText(input));
+  }, [input])
+  
 
   return (
     <div>
@@ -17,6 +27,8 @@ const Companies = () => {
             type="text"
             placeholder="Filter by name"
             className="input input-bordered w-64"
+            value={input}
+            onChange={(e) => setinput(e.target.value)}
           />
 
           <button

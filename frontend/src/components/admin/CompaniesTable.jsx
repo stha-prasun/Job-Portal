@@ -1,8 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const CompaniesTable = () => {
-  const { companies } = useSelector((store) => store.company);
+  const { companies, searchCompanyByText } = useSelector((store) => store.company);
+  const [filteredCompany, setFilteredCompany] = useState([]);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!searchCompanyByText) {
+      setFilteredCompany(companies);
+    } else {
+      const filtered = companies?.filter((company) =>
+        company?.name?.toLowerCase().includes(searchCompanyByText.toLowerCase())
+      );
+      setFilteredCompany(filtered);
+    }
+  }, [companies, searchCompanyByText]);
+
   return (
     <div className="mt-5">
       <h1 className="text-lg font-bold mb-4">
@@ -11,7 +27,6 @@ const CompaniesTable = () => {
 
       <div className="overflow-x-auto">
         <table className="table table-zebra w-full">
-          {/* Table Head */}
           <thead>
             <tr>
               <th>Company ID</th>
@@ -22,19 +37,18 @@ const CompaniesTable = () => {
             </tr>
           </thead>
           <tbody>
-            {companies?.length <= 0 ? (
-              <span>No Companies</span>
+            {filteredCompany?.length === 0 ? (
+              <tr>
+                <td colSpan="5" className="text-center py-4">No Companies Found</td>
+              </tr>
             ) : (
-              companies?.map((company) => (
+              filteredCompany?.map((company) => (
                 <tr key={company?._id}>
                   <td>{company?._id}</td>
                   <td>
                     <div className="avatar">
                       <div className="w-16 rounded-full">
-                        <img
-                          src={company?.logo}
-                          alt="Company Logo"
-                        />
+                        <img src={company?.logo} alt="Company Logo" />
                       </div>
                     </div>
                   </td>
@@ -43,9 +57,7 @@ const CompaniesTable = () => {
                   <td>
                     <button
                       className="btn btn-sm btn-neutral"
-                      onClick={() =>
-                        document.getElementById("my_modal_3").showModal()
-                      }
+                      onClick={()=>navigate(`/admin/companies/${company?._id}`)}
                     >
                       Edit
                     </button>

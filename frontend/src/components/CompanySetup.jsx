@@ -6,10 +6,13 @@ import { COMPANY_API_ENDPOINT } from "../utils/constants";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import useGetCompanyById from "../hooks/useGetCompanyById";
 
 const CompanySetup = () => {
   const params = useParams();
   const navigate = useNavigate();
+  
+  useGetCompanyById(params.id);
 
   const [input, setinput] = useState({
     name: "",
@@ -64,10 +67,10 @@ const CompanySetup = () => {
 
   useEffect(() => {
     setinput({
-      name: singleCompany.name || "",
-    description: singleCompany.description || "",
-    website: singleCompany.website || "",
-    location: singleCompany.location || "",
+    name: singleCompany?.name || "",
+    description: singleCompany?.description || "",
+    website: singleCompany?.website || "",
+    location: singleCompany?.location || "",
     file: null,
     })
   }, [singleCompany])
@@ -79,7 +82,7 @@ const CompanySetup = () => {
       <div className="max-w-xl mx-auto my-10">
         <form onSubmit={handleSubmit}>
           <div className="flex items-center gap-5 p-8">
-            <button className="btn text-gray-500 font-semibold">
+            <button onClick={()=>navigate("/admin/companies")} className="btn text-gray-500 font-semibold">
               <FaArrowLeft />
               Back
             </button>
