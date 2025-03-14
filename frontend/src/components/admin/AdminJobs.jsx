@@ -32,7 +32,7 @@ const AdminJobs = () => {
           />
 
           <button
-            onClick={() => navigate("/admin/companies/create")}
+            onClick={() => navigate("/admin/jobs/create")}
             className="btn btn-neutral"
           >
             New Job
