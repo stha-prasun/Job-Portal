@@ -1,20 +1,25 @@
 import React, { useState } from "react";
 import Navbar from "../shared/Navbar";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { JOB_API_ENDPOINT } from "../../utils/constants";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const PostJobs = () => {
+  const navigate = useNavigate();
   const { companies } = useSelector((store) => store.company);
 
   const [input, setinput] = useState({
     title: "",
     description: "",
     requirements: "",
-    salary: "",
+    salary: 0,
     location: "",
     jobType: "",
-    experienceLevel: "",
+    experienceLevel: 0,
     openings: 0,
-    companyID: "",
+    company: "",
   });
 
   const handleInput = (e) => {
@@ -22,19 +27,40 @@ const PostJobs = () => {
   };
 
   const handleSelect = (e) => {
-    setinput({ ...input, companyID: e.target.value });
+    setinput({ ...input, company: e.target.value });
   };
 
-  const handleSubmit = (e)=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(input);
-  }
+    try {
+      const res = await axios.post(
+        `http://localhost:8080/api/v1/job/post`,
+        input,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      if (res?.data?.success) {
+        navigate("/admin/jobs");
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.response?.data?.message);
+    }
+  };
 
   return (
     <div>
       <Navbar />
       <div className="flex items-center justify-center my-5">
-        <form onSubmit={handleSubmit} className="p-8 max-w-4xl border border-gray-200 shadow-lg rounded-md">
+        <form
+          onSubmit={handleSubmit}
+          className="p-8 max-w-4xl border border-gray-200 shadow-lg rounded-md"
+        >
           <div className="grid grid-cols-2 gap-5">
             <fieldset className="fieldset">
               <legend className="fieldset-legend">Title</legend>
@@ -105,7 +131,7 @@ const PostJobs = () => {
             <fieldset className="fieldset">
               <legend className="fieldset-legend">Experience Level</legend>
               <input
-                type="text"
+                type="number"
                 className="input"
                 name="experienceLevel"
                 placeholder="Type here"
@@ -128,15 +154,17 @@ const PostJobs = () => {
           {companies.length > 0 && (
             <fieldset className="fieldset">
               <legend className="fieldset-legend">Company</legend>
-              <select onChange={handleSelect} defaultValue="Select A Company" className="select">
-                <option disabled={true}>Select A Company</option>
-                {companies.map((company) => {
-                  return (
-                    <option value={company._id} key={company._id}>
+              <select
+                onChange={handleSelect}
+                value={input.company}
+                className="select"
+              >
+                <option value="">Select a Company</option>
+                {companies.map((company) => (
+                  <option value={company._id} key={company._id}>
                     {company.name}
                   </option>
-                  );
-                })}
+                ))}
               </select>
             </fieldset>
           )}
