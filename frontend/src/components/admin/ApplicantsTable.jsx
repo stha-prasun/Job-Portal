@@ -1,9 +1,40 @@
+import axios from "axios";
 import React from "react";
+import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { APPLICATION_API_ENDPOINT } from "../../utils/constants";
 
 const ApplicantsTable = () => {
   const { allApplicants } = useSelector((store) => store.application);
+
+  const handleAccept = async (id) =>{
+    try {
+        const res = await axios.put(`${APPLICATION_API_ENDPOINT}/status/${id}/update`, {
+            "status" : "accepted"
+        }, {withCredentials:true})
+        if(res?.data?.success){
+            toast.success(res?.data?.message);
+        }
+    } catch (error) {
+        console.log(error);
+        toast.error(error.response.data.message);
+    }
+  }
+
+  const handleReject = async (id) =>{
+    try {
+        const res = await axios.put(`${APPLICATION_API_ENDPOINT}/status/${id}/update`, {
+            "status" : "rejected"
+        }, {withCredentials:true})
+        if(res?.data?.success){
+            toast.success(res?.data?.message);
+        }
+    } catch (error) {
+        console.log(error);
+        toast.error(error.response.data.message);
+    }
+  }
 
   return (
     <div className="overflow-x-auto">
@@ -11,7 +42,7 @@ const ApplicantsTable = () => {
         {/* head */}
         <thead>
           <tr>
-            <th>Fullame</th>
+            <th>Fullname</th>
             <th>Email</th>
             <th>Contact</th>
             <th>Resume</th>
@@ -37,8 +68,8 @@ const ApplicantsTable = () => {
                 )}
               </td>
               <td>
-                <button className="btn btn-sm btn-neutral">Accept</button>
-                <button className="btn btn-sm btn-neutral ml-2">
+                <button onClick={()=>handleAccept(item?._id)} className="btn btn-sm btn-neutral">Accept</button>
+                <button onClick={()=>handleReject(item?._id)} className="btn btn-sm btn-neutral ml-2">
                   Reject
                 </button>
               </td>
