@@ -56,6 +56,12 @@ const AdminJobsTable = () => {
                     >
                       Edit
                     </button>
+                    <button
+                    onClick={()=>navigate(`/admin/jobs/${job._id}/applicants`)}
+                      className="btn btn-sm btn-neutral ml-2"
+                    >
+                      Applicants
+                    </button>
                   </td>
                 </tr>
               ))

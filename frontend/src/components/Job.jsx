@@ -11,7 +11,7 @@ const Job = ({job}) => {
       <div class="card-body">
         <div className="flex justify-around items-center">
           <button className="btn btn-square">
-            <FaGoogle />
+            <img src={job?.company?.logo} alt="Company-logo" />
           </button>
           <div className="ml-2">
             <div className="w-52 flex justify-between items-center">
