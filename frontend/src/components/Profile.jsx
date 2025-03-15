@@ -6,12 +6,14 @@ import { RiContactsLine } from "react-icons/ri";
 import AppliedJobsTable from "./AppliedJobsTable";
 import UpdateProfile from "./updateProfile";
 import { useSelector } from "react-redux";
+import useGetAppliedJobs from "../hooks/useGetAppliedJobs";
 
 // const skills = ["Html", "CSS", "JavaScript", "ReactJs"];
 
 const Profile = () => {
+  useGetAppliedJobs();
   const haveResume = true;
-  const {loggedInUser} = useSelector((store)=>store.auth);
+  const { loggedInUser } = useSelector((store) => store.auth);
 
   return (
     <div>
@@ -32,7 +34,9 @@ const Profile = () => {
             <div>
               <h1 className="font-medium text-xl">{loggedInUser?.fullname}</h1>
               <p>
-                {loggedInUser?.profile?.bio?.trim() ? loggedInUser.profile.bio : "NA"}
+                {loggedInUser?.profile?.bio?.trim()
+                  ? loggedInUser.profile.bio
+                  : "NA"}
               </p>
             </div>
           </div>
@@ -41,10 +45,10 @@ const Profile = () => {
             className="btn"
             onClick={() => document.getElementById("my_modal_1").showModal()}
           >
-            <MdOutlineEdit size={25}/>
+            <MdOutlineEdit size={25} />
           </button>
           <dialog id="my_modal_1" className="modal">
-            <UpdateProfile/>
+            <UpdateProfile />
           </dialog>
         </div>
         <div className="my-5">

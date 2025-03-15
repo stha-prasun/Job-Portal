@@ -1,6 +1,8 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 const AppliedJobsTable = () => {
+  const { appliedJobs } = useSelector((store) => store.job);
   return (
     <div>
       <div className="overflow-x-auto rounded-box">
@@ -8,7 +10,6 @@ const AppliedJobsTable = () => {
           {/* head */}
           <thead>
             <tr>
-              <th></th>
               <th>Date</th>
               <th>Job Role</th>
               <th>Company</th>
@@ -17,13 +18,12 @@ const AppliedJobsTable = () => {
           </thead>
           <tbody>
             {/* row 1 */}
-            {[1, 2, 3, 4].map((item, index) => (
-              <tr className="hover:bg-base-300">
-                <th>1</th>
-                <td>Hart Hagerty</td>
-                <td>Desktop Support Technician</td>
-                <td>Purple</td>
-                <td>Accepted</td>
+            {appliedJobs?.map((item, index) => (
+              <tr key={index} className="hover:bg-base-300">
+                <td>{item?.updatedAt.split("T")[0]}</td>
+                <td>{item?.job?.title}</td>
+                <td>{item?.job?.company?.name}</td>
+                <td>{item?.status}</td>
               </tr>
             ))}
           </tbody>
