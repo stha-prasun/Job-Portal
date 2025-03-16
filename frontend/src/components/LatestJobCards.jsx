@@ -1,9 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const LatestJobCards = ({job}) => {
+  const navigate = useNavigate();
+
   return (
     <div>
-      <div className="card w-96 shadow-xl border border-gray-100 cursor-pointer">
+      <div onClick={()=>navigate(`description/${job?._id}`)} className="card w-96 shadow-xl border border-gray-100 cursor-pointer">
         <figure>
           <img src="/img.jpg" alt="img" className="w-96 object-fill" />
         </figure>
